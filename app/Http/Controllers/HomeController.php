@@ -370,7 +370,9 @@ class HomeController extends Controller
             ];
             Order_details::create($ordersDetails);
         }
-        dd(1);
+        dd("done add new order vs order_details");
+        // con phan gui maill xac nhan a Tien hoan thien not nhe
+
 
 //        if(Bill::create([
 //            'idUser'=>Auth::user()->id,
