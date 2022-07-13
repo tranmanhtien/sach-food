@@ -94,6 +94,7 @@
                             </ul>
                             <div class="checkout__order__total">Tổng tiền <span>{{($total)}} vnĐ</span></div>
                             <input type="hidden" name="price" value="{{$total}}">
+                            <input type="hidden" name="data" value="{{$data}}">
                             <button type="submit" class="site-btn">Đặt Sản Phẩm</button>
                         </div>
                     </div>
