@@ -24,21 +24,23 @@ class UserRegister extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email:rfc,dns|unique:users',
-            'password'=>'required|min:8',
-            'password2'=>'required|min:8',
+            'fullname' => 'required|string|max:255',  // validate thông tin họ tên bắt buộc phải nhập
+            'email' => '|unique:users|required|email', // validate định dạng email và kiểm tra email đã tồn tại hay chưa
+            'password' => ['required', 'string', 'min:8', 'confirmed'], // validate thông tin password bắt buộc nhập và phải từ 8 ký tự trở lên
+            // 'email' => 'required|email:rfc,dns|unique:users',
+            // 'password'=>'required|min:8',
+            // 'password2'=>'required|min:8',
         ];
     }
     public function messages()
     {
         return [
-            'email.required'=>'không để trống',
-            'email.email'=>'không đúng định dạng email',
-            'email.unique'=>'Email :users đã được đăng ký',
+            'fullname.max' => 'Độ dài tối đa của tên là 255 ký tự ',
+            'required' => ':attribute không được bỏ trống',
+            'email.email'=>'Không đúng định dạng email',
+            'email.unique'=>'Email đã được đăng ký',
             'password.required'=>'không để trống',
-            'password2.required'=>'không để trống',
             'password.min'=>'không được bé hơn 8 ký tự',
-            'password2.min'=>'không được bé hơn 8 ký tự',
         ];
     }
 }

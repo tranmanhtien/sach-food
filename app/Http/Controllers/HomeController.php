@@ -373,9 +373,9 @@ class HomeController extends Controller
                 $car->genaral = 2;
                 $car->save();
             }
-            $dataSend = []
+            // $dataSend = [];
             //gửi mail
-            Mail::to($request->input('email'))->send(new OrderMail($da));
+            // Mail::to($request->input('email'))->send(new OrderMail($da));
 
 
             return redirect()->route('home')->with('success','Đặt thành công.');
