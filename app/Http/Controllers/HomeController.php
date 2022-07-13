@@ -11,7 +11,9 @@ use App\Models\Blog;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Bill\createRequest;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Mail;
+use PHPUnit\Util\Exception;
 
 class HomeController extends Controller
 {
@@ -353,33 +355,50 @@ class HomeController extends Controller
         return view("page.content.infobook", compact('data', 'total','amount', 'products'));
     }
     public function postthanhtoan(createRequest $request){
-        if(Bill::create([
-            'idUser'=>Auth::user()->id,
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'genaral'=>1,
-            'price'=>$request->price,
-            'numberPhone'=>$request->numberPhone,
-            'address'=>"Số-Đường :".$request->sonha."/Xã :".$request->xa."/Huyện-Quận :".$request->huyen."/Tỉnh :".$request->tinh
-        ]))
-        {
-            $cartUser = Cart::where('idUser', '=', Auth::user()->id)->where('genaral','=',1)->get();
-            //dd($cartUser);
-            foreach($cartUser as $car){
-                //$pro = Product::where('id', '=', $car->idProduct)->get();
-                $pro =Product::find($car->idProduct);
-                $pro->amount = $pro->amount - $car->amount;
-                $pro->save();
-                $car->genaral = 2;
-                $car->save();
+        try {
+            if(Bill::create([
+                'idUser'=>Auth::user()->id,
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'genaral'=>1,
+                'price'=>$request->price,
+                'numberPhone'=>$request->numberPhone,
+                'address'=>"Số-Đường :".$request->sonha."/Xã :".$request->xa."/Huyện-Quận :".$request->huyen."/Tỉnh :".$request->tinh
+            ])) {
+                $cartUser = Cart::where('idUser', '=', Auth::user()->id)->with('products')->where('genaral', '=', 1)->get();
+
+                //Lấy data truyền sang mail
+                $sum = 0;
+                $arrCart = [];
+                foreach ($cartUser as $item) {
+                    $arrCart['cart'][] = [
+                        'name' => $item->products->name,
+                        'quantity' => $item->amount,
+                        'price' => $item->products->price,
+                        'sum' => $item->amount * $item->products->price,
+                    ];
+                    $sum += $item->amount * $item->products->price;
+                }
+                $email = $request->input('email');
+                $arrCart['sum'] = $sum;
+                //gửi mail
+                Mail::to($email)
+                    ->send(new OrderMail($arrCart));
+                foreach ($cartUser as $car) {
+                    $pro = Product::find($car->idProduct);
+                    $pro->amount = $pro->amount - $car->amount;
+                    $pro->save();
+                    $car->genaral = 2;
+                    $car->save();
+                }
             }
-            // $dataSend = [];
-            //gửi mail
-            // Mail::to($request->input('email'))->send(new OrderMail($da));
 
-
-            return redirect()->route('home')->with('success','Đặt thành công.');
+                return redirect()->route('home')->with('success','Đặt thành công.');
+        } catch (Exception $e)
+        {
+            Log::error($e->getMessage());
         }
+
     }
     public function mycart(){
         $amount = 0;
