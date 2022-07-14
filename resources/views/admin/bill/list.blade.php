@@ -38,9 +38,24 @@
                         <i class="zmdi zmdi-shopping-cart text-warning"></i>
                     </a>
                     @endif
-                    <a href="{{route('admin.changeBill',$book->id)}}" class="item btnchage "  data-toggle="tooltip" data-placement="top" title="Đã giao">
+                    @if ($book->genaral == 1)
+                        <a href="" class="item btnchage "  data-toggle="tooltip" data-placement="top" title="Đang xử lý">
+                            <i class="fa fa-spinner" aria-hidden="true"></i>
+
+                         </a>
+                    @elseif($book->genaral == 2)
+                     <a href="" class="item btnchage "  data-toggle="tooltip" data-placement="top" title="Đã giao">
                         <i class="zmdi zmdi-badge-check text-success"></i>
-                    </a>
+                     </a>
+                    @else
+                        <a href="" class="item btnchage "  data-toggle="tooltip" data-placement="top" title="Đã huỷ">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                        </a>
+                    @endif
+                
+                    {{-- <a href="{{route('admin.changeBill',$book->id)}}" class="item btnchage "  data-toggle="tooltip" data-placement="top" title="Đã giao">
+                        <i class="zmdi zmdi-badge-check text-success"></i>
+                    </a> --}}
                 </div> 
             </td>
         </tr>

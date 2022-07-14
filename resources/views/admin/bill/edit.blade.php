@@ -89,8 +89,22 @@
                     @enderror
                     <input type="hidden" id="text-input" value="{{$id->address}}"  name="address" placeholder="Tỉnh- Thành Phố" class="form-control">
                     <label for="text-input" class=" form-control-label">Địa chỉ lúc đàu: {{$id->address}}</label>
+                   
                 </div>
             </div>
+
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="">Trạng thái giao hàng</label>
+                </div>
+                <div class="col col-md-9">
+                    <select name="status" id="">
+                        <option value="1" {{$id->genaral == 1 ? 'selected' : ''}}>Đang xử lý</option>
+                        <option value="2" {{$id->genaral == 2 ? 'selected' : ''}}>Đã giao</option>
+                    </select>
+                </div>
+            </div>
+            
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary btn-sm">
                     <i class="fa fa-dot-circle-o"></i> Submit

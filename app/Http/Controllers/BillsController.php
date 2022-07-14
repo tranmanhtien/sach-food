@@ -54,6 +54,7 @@ class BillsController extends Controller
             $id->price = $request->price;
             $id->address = $request->address;
             $id->numberPhone = $request->numberPhone;
+            $id->genaral = $request->status; 
             $id->save();
             return redirect()->route('admin.listBill')->with('success',"Sửa thành công");
         }
@@ -68,6 +69,7 @@ class BillsController extends Controller
             $id->price = $request->price;
             $id->address = $request->address;
             $id->numberPhone = $request->numberPhone;
+            $id->genaral = $request->status; 
             $id->save();
             return redirect()->route('admin.listBill')->with('success',"Sửa thành công");
         }

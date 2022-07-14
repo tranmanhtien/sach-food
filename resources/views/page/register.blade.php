@@ -22,12 +22,12 @@
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                 @if(Session::has('success'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-danger" role="alert">
                   {{Session::get('success')}}
                 </div>
               @endif 
               @if(Session::has('error'))
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-success" role="alert">
                   {{Session::get('error')}}
                 </div>
               @endif
@@ -51,18 +51,7 @@
                 <div class="divider d-flex align-items-center my-4">
                   <p class="text-center fw-bold mx-3 mb-0">Hoặc</p>
                 </div>
-                
-
-                 <!-- Email input -->
-                 <div class="form-outline mb-4">
-                  @error('fullname')
-                          <small class="help-block">{{$message}}</small>
-                  @enderror
-                  <input type="text" name="fullname" id="form3Example3" class="form-control form-control-lg"
-                    placeholder="Nhập họ tên" />
-                  <label class="form-label" for="form3Example3">Họ và tên</label>
-                </div>
-
+      
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     @error('email')
@@ -83,10 +72,10 @@
                   <label class="form-label" for="form3Example4">Mật khẩu</label>
                 </div>
                 <div class="form-outline mb-3">
-                    @error('password_confirmation')
+                    @error('password2')
                             <small class="help-block">{{$message}}</small>
                     @enderror
-                    <input type="password" name="password_confirmation" id="form3Example4" class="form-control form-control-lg"
+                    <input type="password" name="password2" id="form3Example4" class="form-control form-control-lg"
                       placeholder="Nhập lại mật khẩu" />
                     <label class="form-label" for="form3Example4">Nhập lại mật khẩu</label>
                   </div>    
