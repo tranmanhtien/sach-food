@@ -334,56 +334,41 @@ class HomeController extends Controller
 
     public function postthanhtoan(createRequest $request)
     {
-        $address = ($request->sonha) . DIRECTORY_SEPARATOR . ($request->xa) . DIRECTORY_SEPARATOR . ($request->huyen) . DIRECTORY_SEPARATOR . ($request->tinh);
-        $dataOrders = [
-            'user_id' => Auth::user()->id,
+        if (Bill::create([
+            'idUser' => Auth::user()->id,
             'name' => $request->name,
             'email' => $request->email,
-            'address' => $address,
-            'number_phone' => $request->numberPhone,
-            'total' => $request->price,
-            'status' => 0,
-            'payoff_method' => 0,
-            'order_code' => 'OD' . rand(),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
-
-        $orders = Orders::create($dataOrders);
-
-        $data = $request->data;
-        $dataOrders = json_decode($data, true);
-        foreach ($dataOrders as $dataOrder) {
-            $product = Product::find($dataOrder['idProduct']);
-            $priceProduct = $product->price;
-            $price = $dataOrder['amount'] * $priceProduct;
-            $quantity = $dataOrder['amount'];
-            $productId = $dataOrder['idProduct'];
-            $orderId = $orders->id;
-            $ordersDetails = [
-                'product_id' => $productId,
-                'order_id' => $orderId,
-                'quantity' => $quantity,
-                'price' => $price,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-            Order_details::create($ordersDetails);
+            'genaral' => 1,
+            'price' => $request->price,
+            'numberPhone' => $request->numberPhone,
+            'address' => "Số-Đường :" . $request->sonha . "/Xã :" . $request->xa . "/Huyện-Quận :" . $request->huyen . "/Tỉnh :" . $request->tinh
+        ])) {
+            $cartUser = Cart::where('idUser', '=', Auth::user()->id)->where('genaral', '=', 1)->get();
+            //dd($cartUser);
+            foreach ($cartUser as $car) {
+                //$pro = Product::where('id', '=', $car->idProduct)->get();
+                $pro = Product::find($car->idProduct);
+                //dd($pro);
+                $pro->amount = $pro->amount - $car->amount;
+                $pro->save();
+                $car->genaral = 2;
+                $car->save();
+            }
+            return redirect()->route('home')->with('success', 'Đặt thành công.');
         }
-        dd("done add new order vs order_details");
         // con phan gui maill xac nhan a Tien hoan thien not nhe
 
 
-//        if(Bill::create([
-//            'idUser'=>Auth::user()->id,
-//            'name'=>$request->name,
-//            'email'=>$request->email,
-//            'genaral'=>1,
-//            'price'=>$request->price,
-//            'numberPhone'=>$request->numberPhone,
-//            'address'=>"Số-Đường :".$request->sonha."/Xã :".$request->xa."/Huyện-Quận :".$request->huyen."/Tỉnh :".$request->tinh
-//        ]))
-//        {
+        //        if(Bill::create([
+        //            'idUser'=>Auth::user()->id,
+        //            'name'=>$request->name,
+        //            'email'=>$request->email,
+        //            'genaral'=>1,
+        //            'price'=>$request->price,
+        //            'numberPhone'=>$request->numberPhone,
+        //            'address'=>"Số-Đường :".$request->sonha."/Xã :".$request->xa."/Huyện-Quận :".$request->huyen."/Tỉnh :".$request->tinh
+        //        ]))
+        //        {
         /*            $cartUser = Cart::where('idUser', '=', Auth::user()->id)->where('genaral','=',1)->get();
                     //dd($cartUser);
                     foreach($cartUser as $car){
@@ -404,7 +389,7 @@ class HomeController extends Controller
 
 
         //return redirect()->route('home')->with('success','Đặt thành công.');
-//        }
+        //        }
     }
 
     public function mycart()
