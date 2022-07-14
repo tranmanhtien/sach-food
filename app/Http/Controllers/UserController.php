@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\RegisterUserNotification;
 use Illuminate\Support\Facades\Log;
+use App\Mail\RegisterUser;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -58,38 +60,28 @@ class UserController extends Controller
     }
     public function PostRegister(UserRegister $request)
     {
-        try {
-            $active_token = md5($request->input('email') . time());
-            $customer =  User::create([
-                'name'     =>   trim($request->input('fullname')),
-                'email'    => trim($request->input('email')),
-                'password' => trim(Hash::make($request->input('password'))),
-                'active_token' => $active_token,
-                'address' => 'NULL',
-                'number_phone' => 'NULL',
-                'level' => 'NULL'
-            ]);
-
-             // Link active user
-             $linkActive = route('active.user', "active-token=$active_token");
-             
-             // Tiến hành gửi mail đến user đăng ký
-             $customer->notify(new RegisterUserNotification($linkActive));
-
-
-            return redirect()->route('home.login')->with('success', "Đăng ký thành công");
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->route('home.register')->with('error', "Không hợp lệ vui lòng làm lại!");
-        }
+        if (!Hash::check($request->password, $request->password2)) {
+            if (User::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'level' => 1,
+                'is_active' => '1'
+            ])) {
+                Mail::to($request->email)->send(new RegisterUser());
+                return redirect()->route('home.login')->with('success', "Đăng ký thành công");
+            } else {
+                return redirect()->route('home.register')->with('error', "Không hợp lệ vui lòng làm lại!");
+            }
+        } else
+            return redirect()->route('home.register')->with('error', "Lỗi mật khẩu không giống nhau!");
     }
 
-    public function activeUser(Request $request) 
+    public function activeUser(Request $request)
     {
-        $active_token =$request->input('active-token');
-        $num_active_token = User::where('active_token', '=' , "$active_token")->where('is_active', '=', '0')->count();
-        if($num_active_token > 0){
-             User::where('active_token', '=' , "$active_token")->where('is_active', '=', '0')->update([
+        $active_token = $request->input('active-token');
+        $num_active_token = User::where('active_token', '=', "$active_token")->where('is_active', '=', '0')->count();
+        if ($num_active_token > 0) {
+            User::where('active_token', '=', "$active_token")->where('is_active', '=', '0')->update([
                 'is_active' => '1'
             ]);
             $user = User::where('active_token', '=',  $active_token)->where('is_active', '=', '1')->first();
@@ -100,7 +92,7 @@ class UserController extends Controller
             ]);
 
             return redirect('kich-hoat-thanh-cong');
-        } else{
+        } else {
             return abort(404);
         }
     }
@@ -112,49 +104,22 @@ class UserController extends Controller
 
     public function PostLogin(UserLogin $request)
     {
-        //dd($request->all());
-          // Validate thông tin email, password để tiến hành
-          $credentials = $request->validate([
+        // Validate thông tin email, password để tiến hành
+        $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        
-        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'], 'is_active' => '1', 'role' => '1'])) {
+
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'], 'role' => '1'])) {
             // Authentication was successful...
             return redirect('admin');
+        } else if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'], 'role' => '0'])) {
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
             'login_fail' => 'The provided credentials do not match our records.',
         ]);
-        // $rememberMe = $request->has('rememberMe') ? TRUE : FALSE;
-        // $dataUser = [
-        //     'email' => $request->email,
-        //     'password' => $request->password
-        // ];
-
-    
-        // if (Auth::attempt($dataUser, $rememberMe)) {
-        //     $user = User::where(["email" => $request->email])->first();
-        //     $level = $user->level;
-        //     Auth::login($user, $rememberMe);
-        //     if ($level == 1) {
-        //         return redirect()->route('home')->with('success', 'Successfully Register, You can login!');
-        //     } else {
-        //         return redirect()->route('admin.listProduct')->with('success', 'Successfully Register, You can login!');
-        //     }
-        // } else if (Auth::attempt($dataUser)) {
-        //     $user = User::where(["email" => $request->email])->first();
-        //     $level = $user->level;
-        //     Auth::login($user);
-        //     if ($level == 1) {
-        //         return redirect()->route('home')->with('success', 'Successfully Register, You can login!');
-        //     } else {
-        //         return redirect()->route('admin.listProduct')->with('success', 'Successfully Register, You can login!');
-        //     }
-        // } {
-        //     return redirect()->route('home.login')->with('error', 'Error Register, Again!');
-        // }
     }
     public function view()
     {

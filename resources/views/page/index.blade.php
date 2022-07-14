@@ -342,16 +342,102 @@ $blog = Blog::all();
     </div>
 </footer>
 <!-- Footer Section End -->
+ <!-- Include the PayPal JavaScript SDK -->
+ <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+<script src="{{ asset('./homepage/js/jquery-3.3.1.min.js')}}"></script>
+<script src="{{ asset('./homepage/js/bootstrap.min.js')}}"></script>
+<script src="{{ asset('./homepage/js/jquery-ui.min.js')}}"></script>
+ <script>
+    (function ($) {
+    
+     var totalPayment = $('#total-payment').val()
+    
+    //  var form = $('#form-payment').serializeArray()
+    //  console.log('form', form)
+    
+   
+     $('#paypal-button-container').click(function(){
+        console.log('1234');
+        $('#form-payment').trigger('submit');
+    });
 
+    var name =  $('#name-payment').val()
+     var apartment_number_payment = $('#apartment-number-payment').val()
+     var district_payment =  $('#district-payment').val()
+     var city_payment =  $('#city-payment').val()
+     var phone_payment =  $('#phone-payment').val()
+     var email_payment =  $('#email-payment').val()
+     var list_order = $('#data-payment-detail').val()
+     var payload = {
+        amount: totalPayment,
+        list_order: JSON.stringify(list_order),
+        email: email_payment
+     }
+
+     paypal.Buttons({
+
+        //  // Call your server to set up the transaction
+         createOrder: function(data, actions) {
+             return fetch('api/paypal/order/create', {
+                 method: 'post',
+                 body: JSON.stringify(payload)
+             }).then(function(res) {
+                 return res.json();
+             }).then(function(orderData) {
+                orderId = orderData.data.id;
+                payload.orderId = orderData.data.id
+                return orderData.data.id;
+             });
+         },
+
+                 // Call your server to set up the transaction
+        createOrder: function(data, actions) {
+
+            // $('#message-error').text('')
+             return fetch('api/paypal/order/create', {
+                 method: 'post',
+                 body: JSON.stringify(payload)
+             }).then(function(res) {
+                 return res.json();
+             }).then(function(orderData) {
+                orderId = orderData.data.id;
+                payload.orderId = orderData.data.id
+                return orderData.data.id;
+             });
+
+            // if (name ==='' || apartment_number_payment === '' || district_payment === '' 
+            // || city_payment === '' || phone_payment === '' || email_payment === '') {
+            //     $('#message-error').text('Bạn cần nhập đầy đủ thông tin trước khi thanh toán')
+            // } 
+            // else {
+                
+        
+            // }
+         },
+
+         // Call your server to finalize the transaction
+         onApprove: function(data, actions) {
+            console.log('payload order', payload)
+             return fetch('api/paypal/order/capture', {
+                 method: 'post',
+                 body: JSON.stringify(payload)
+             }).then(function(res) {
+                 return res.json();
+             }).then(function(orderData) {
+                console.log('OrderData', orderData)
+             });
+         }
+
+     }).render('#paypal-button-container');
+    })(jQuery);
+ </script>
 <!-- Js Plugins -->
 <script src="{{ asset('./homepage/js/jquery-3.3.1.min.js')}}"></script>
 <script src="{{ asset('./homepage/js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('./homepage/js/jquery.nice-select.min.js')}}"></script>
 <script src="{{ asset('./homepage/js/jquery-ui.min.js')}}"></script>
-<script src="{{ asset('./homepage//jquery.slicknav.js')}}"></script>
-<script src="{{ asset('./homepage//mixitup.min.js')}}"></script>
 <script src="{{ asset('./homepage/js/owl.carousel.min.js')}}"></script>
-<script src="{{ asset('./homepage/js/main.js')}}"></script>
+<script src="{{ asset('/viewAdmin/js/app.js')}}"></script>
 <script src="{{ asset('/viewAdmin/js/action.js')}}"></script>
 </body>
 

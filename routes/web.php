@@ -26,39 +26,43 @@ Route::POST('/quen-matkhau/mkm', 'UserController@postpasss')->name('home.postpas
 Route::get('/xac-thuc-email/kich-hoat-nguoi-dung', 'UserController@activeUser')->name('active.user');
 Route::get('/kich-hoat-thanh-cong', 'UserController@activeSuccess')->name('active.success');
 
-Route::prefix('admin')->group(function () {
-    // route User
-    Route::get('/doimatkhau/{id}', 'AdminController@changepass')->name('admin.changepass');
-    Route::POST('/doimatkhau/{id}', 'AdminController@postchangepass')->name('admin.postchangepass');
-    Route::get('/index', 'AdminController@index')->name('admin.index');
-    Route::get('/listuser', 'AdminController@listUser')->name('admin.listUser');
-    Route::get('/edituser', 'AdminController@editUser')->name('admin.edituser');
+Route::middleware('user.active')->group(function () {
+    Route::prefix('admin')->group(function () {
+        // route User
+        Route::get('/doimatkhau/{id}', 'AdminController@changepass')->name('admin.changepass');
+        Route::POST('/doimatkhau/{id}', 'AdminController@postchangepass')->name('admin.postchangepass');
+        Route::get('/index', 'AdminController@index')->name('admin.index');
+        Route::get('/listuser', 'AdminController@listUser')->name('admin.listUser');
+        Route::get('/edituser', 'AdminController@editUser')->name('admin.edituser');
     
-    // route Product
-    Route::get('/danhsach-sanpham', 'ProductController@list')->name('admin.listProduct');
-    Route::get('/editproduct/{id}', 'ProductController@edit')->name('admin.editProduct');
-    Route::PUT('/updateproduct/{id}', 'ProductController@update')->name('admin.updateProduct');
-    Route::get('/addproduct', 'ProductController@add')->name('admin.addProduct');
-    Route::POST('/postaddproduct', 'ProductController@create')->name('admin.postaddProduct');
-    Route::DELETE('/deleteproduct/{id}', 'ProductController@delete')->name('admin.deleteProduct');
-    //route blob
-    Route::get('/danhsach-blog', 'BlogController@list')->name('admin.listBlog');
-    Route::get('/editblog/{id}', 'BlogController@edit')->name('admin.editBlog');
-    Route::PUT('/updateblog/{id}', 'BlogController@update')->name('admin.updateBlog');
-    Route::get('/addblog', 'BlogController@add')->name('admin.addBlog');
-    Route::POST('/postaddblog', 'BlogController@create')->name('admin.postaddBlog');
-    Route::DELETE('/deleteblog/{id}', 'BlogController@delete')->name('admin.deleteBlog');
-    //Route Bill
-    Route::get('/', 'BillsController@list')->name('admin.listBill');
-    Route::get('/hoadon/sanpham/{id}/{idUser}', 'BillsController@sanpham')->name('admin.sanpham');
-    Route::get('/editbill/{id}', 'BillsController@edit')->name('admin.editBill');
-    Route::PUT('/updatebill/{id}', 'BillsController@update')->name('admin.updateBill');
-    Route::get('/addbill', 'BillsController@add')->name('admin.addBill');
-    Route::get('/changebill/{id}', 'BillsController@change')->name('admin.changeBill');
-    Route::POST('/postaddbill', 'BillsController@create')->name('admin.postaddBill');
-    Route::DELETE('/deletebill/{id}', 'BillsController@delete')->name('admin.deleteBill');
-    Route::get('/historyBill', 'BillsController@history')->name('admin.historyBill');
+        // route Product
+        Route::get('/danhsach-sanpham', 'ProductController@list')->name('admin.listProduct');
+        Route::get('/editproduct/{id}', 'ProductController@edit')->name('admin.editProduct');
+        Route::PUT('/updateproduct/{id}', 'ProductController@update')->name('admin.updateProduct');
+        Route::get('/addproduct', 'ProductController@add')->name('admin.addProduct');
+        Route::POST('/postaddproduct', 'ProductController@create')->name('admin.postaddProduct');
+        Route::DELETE('/deleteproduct/{id}', 'ProductController@delete')->name('admin.deleteProduct');
+        //route blob
+        Route::get('/danhsach-blog', 'BlogController@list')->name('admin.listBlog');
+        Route::get('/editblog/{id}', 'BlogController@edit')->name('admin.editBlog');
+        Route::PUT('/updateblog/{id}', 'BlogController@update')->name('admin.updateBlog');
+        Route::get('/addblog', 'BlogController@add')->name('admin.addBlog');
+        Route::POST('/postaddblog', 'BlogController@create')->name('admin.postaddBlog');
+        Route::DELETE('/deleteblog/{id}', 'BlogController@delete')->name('admin.deleteBlog');
+        //Route Bill
+        Route::get('/', 'BillsController@list')->name('admin.listBill');
+        Route::get('/hoadon/sanpham/{id}/{idUser}', 'BillsController@sanpham')->name('admin.sanpham');
+        Route::get('/editbill/{id}', 'BillsController@edit')->name('admin.editBill');
+        Route::PUT('/updatebill/{id}', 'BillsController@update')->name('admin.updateBill');
+        Route::get('/addbill', 'BillsController@add')->name('admin.addBill');
+        Route::get('/changebill/{id}', 'BillsController@change')->name('admin.changeBill');
+        Route::POST('/postaddbill', 'BillsController@create')->name('admin.postaddBill');
+        Route::DELETE('/deletebill/{id}', 'BillsController@delete')->name('admin.deleteBill');
+        Route::get('/historyBill', 'BillsController@history')->name('admin.historyBill');
+    });
 });
+
+
 Route::prefix('/')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/thit', 'HomeController@thit')->name('home.thit');

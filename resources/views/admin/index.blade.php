@@ -101,7 +101,6 @@
             </nav>
         </header>
         <!-- END HEADER MOBILE-->
-        @auth
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             
@@ -156,16 +155,7 @@
                 </nav>
             </div>
         </aside>
-        @else
-        <aside class="menu-sidebar d-none d-lg-block">
-            
-            <div class="logo">
-                <a href="#">
-                    <h3><b><strong style="color: rgb(0, 145, 255)">Sạch foods</strong></b></h3>
-                </a>
-            </div>
-        </div>
-    @endauth
+    </div>
         <!-- END MENU SIDEBAR-->
         
         <!-- PAGE CONTAINER-->
@@ -183,9 +173,7 @@
                                 </button>
                             </form>
                             <div class="header-button">
-                                
                                 <div class="account-wrap">
-                                    @auth
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">{{Auth::user()->name}}</a>
@@ -203,25 +191,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @else
-                                    <div class="account-item clearfix js-item-menu">
-                                        <div class="content">
-                                            <a class="js-acc-btn" href="#">john doe</a>
-                                        </div>
-                                        <div class="account-dropdown js-dropdown">
-                                            <div class="account-dropdown__body">
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Cài đặt</a>
-                                                </div>
-                                            </div>
-                                            <div class="account-dropdown__footer">
-                                                <a href="{{ route('home.login') }}">
-                                                    <i class="zmdi zmdi-power"></i>Đăng Nhập</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endauth
                                 </div>
                             </div>
                         </div>
@@ -246,13 +215,9 @@
                                     <strong>Error!</strong> {{Session::get('error')}}
                                 </div> 
                                 @endif 
-                                @auth
                                 <div class="table-responsive table-responsive-data2">
                                     @yield('content')
                                 </div>
-                                @else
-                                <h1>error page</h1>
-                                @endauth
                                 <!-- END DATA TABLE -->
             
                             </div>
