@@ -30,6 +30,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" data-setbg="{{ asset("/imgUploads/$item->img1")}}">
+                        <img src="{{ asset("/imgUploads/$item->img1")}}" alt="" style="height: 300px;object-fit: fill">
                         <ul class="featured__item__pic__hover">
                             <li><a href="{{ route('home.product', $item->id) }}"><i class="fa fa-eye blue-color"></i></a></li>
                             {{-- <li><a href="#"><i class="fa fa-retweet"></i></a></li> --}}
@@ -48,9 +49,10 @@
             <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" data-setbg="{{ asset("/imgUploads/$item->img1")}}">
+                        <img src="{{ asset("/imgUploads/$item->img1")}}" alt="" style="height: 300px;object-fit: fill">
                         <ul class="featured__item__pic__hover">
                             <li><a href="{{ route('home.register') }}"><i class="fa fa-eye blue-color"></i></a></li>
-                            {{-- <li><a href="#"><i class="fa fa-retweet"></i></a></li> --}}
+                            {{-- <li><a href="#"><i class="fa fa-retweet"></i></a></li> --}}P
                             <li><a href="{{ route('home.register') }}"><i class="fa fa-shopping-cart"></i></a></li>
                         </ul>
                     </div>
@@ -66,7 +68,7 @@
             @endauth
         </div>
     </div>
-    
+
     <div style="display: flex; justify-content: center;">
         {{$data->appends(request()->all())->links()}}
     </div>

@@ -34,7 +34,7 @@ Route::middleware('user.active')->group(function () {
         Route::get('/index', 'AdminController@index')->name('admin.index');
         Route::get('/listuser', 'AdminController@listUser')->name('admin.listUser');
         Route::get('/edituser', 'AdminController@editUser')->name('admin.edituser');
-    
+
         // route Product
         Route::get('/danhsach-sanpham', 'ProductController@list')->name('admin.listProduct');
         Route::get('/editproduct/{id}', 'ProductController@edit')->name('admin.editProduct');
@@ -59,6 +59,7 @@ Route::middleware('user.active')->group(function () {
         Route::POST('/postaddbill', 'BillsController@create')->name('admin.postaddBill');
         Route::DELETE('/deletebill/{id}', 'BillsController@delete')->name('admin.deleteBill');
         Route::get('/historyBill', 'BillsController@history')->name('admin.historyBill');
+        Route::get('/thong-ke', 'BillsController@thongKe')->name('admin.thongKe');
     });
 });
 

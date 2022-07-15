@@ -26,7 +26,8 @@ class createRequest extends FormRequest
 
         return [
             'name'=>'required',
-            'email'=>'required|email:rfc,dns',
+            'email'=>'required|email',
+//            'email'=>'required',
             'price'=>'required|integer',
             'numberPhone'=>'required',
             'xa'=>'required',

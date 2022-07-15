@@ -16,6 +16,7 @@
             <th>Ảnh 1</th>
             <th>Ảnh 2</th>
             <th>Ảnh 3</th>
+            <th>Ngày nhập sản phẩm</th>
             <th>Hành Động</th>
         </tr>
     </thead>
@@ -43,10 +44,11 @@
                 <b class="text-white bg-warning">Gói hàng</b>
             @endif
             </td>
-            <td>{{$book->general}}</td>   
+            <td>{{$book->general}}</td>
             <td><img src="{{ asset("/imgUploads/$book->img1")}}" alt=""></td>
-            <td><img src="{{ asset("/imgUploads/$book->img2")}}" alt=""></td> 
-            <td><img src="{{ asset("/imgUploads/$book->img3")}}" alt=""></td>            
+            <td><img src="{{ asset("/imgUploads/$book->img2")}}" alt=""></td>
+            <td><img src="{{ asset("/imgUploads/$book->img3")}}" alt=""></td>
+            <td>{{$book->product_import_date}}</td>
             <td>
                 <div class="table-data-feature">
                     <a  href="{{route('admin.editProduct',$book->id)}}" class="item btnEdit" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -55,7 +57,7 @@
                     <a href="{{route('admin.deleteProduct',$book->id)}}" class="item btnDelete"  data-toggle="tooltip" data-placement="top" title="Delete">
                         <i  class="zmdi zmdi-delete text-danger"></i>
                     </a>
-                </div> 
+                </div>
             </td>
         </tr>
         <tr class="spacer"></tr>

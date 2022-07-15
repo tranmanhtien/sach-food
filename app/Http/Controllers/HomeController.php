@@ -328,21 +328,40 @@ class HomeController extends Controller
                 }
             }
         }
-        $data = Cart::where('idUser', '=', $idUser)->where('genaral', '=', 1)->get();
+        $data = Cart::with('products')->where('idUser', '=', $idUser)->where('genaral', '=', 1)->get();
         return view("page.content.infobook", compact('data', 'total', 'amount', 'products'));
     }
 
     public function postthanhtoan(createRequest $request)
     {
-        if (Bill::create([
-            'idUser' => Auth::user()->id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'genaral' => 1,
-            'price' => $request->price,
-            'numberPhone' => $request->numberPhone,
-            'address' => "Số-Đường :" . $request->sonha . "/Xã :" . $request->xa . "/Huyện-Quận :" . $request->huyen . "/Tỉnh :" . $request->tinh
-        ])) {
+//        dd(json_decode($request->data, true), $request->all());
+        $data = json_decode($request->data, true);
+        $array = [];
+        foreach ($data as $item) {
+            if (!in_array($item['idProduct'], $array)) {
+                $array[] = ['product_id' => $item['idProduct'], 'amount' => $item['amount'], 'price_product' => $item['amount'] * $item['products']['price']];
+            }
+        }
+
+        $success = 0;
+        foreach ($array as $item) {
+            if (Bill::create([
+                'idUser' => Auth::user()->id,
+                'name' => $request->name,
+                'email' => $request->email,
+                'genaral' => 1,
+                'price' => $request->price,
+                'numberPhone' => $request->numberPhone,
+                'address' => "Số-Đường :" . $request->sonha . "/Xã :" . $request->xa . "/Huyện-Quận :" . $request->huyen . "/Tỉnh :" . $request->tinh,
+                'idProduct' => $item['product_id'],
+                'quantity' => $item['amount'],
+                'price_product' => $item['price_product']
+            ])) {
+                $success++;
+            }
+        }
+
+        if ($success > 1) {
             $cartUser = Cart::where('idUser', '=', Auth::user()->id)->where('genaral', '=', 1)->get();
 
             //Lấy data truyền sang mail

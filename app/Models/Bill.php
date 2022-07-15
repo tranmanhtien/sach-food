@@ -18,7 +18,10 @@ class Bill extends Model
         'price',
         'genaral',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'idProduct',
+        'quantity',
+        'price_product'
     ];
     public function scopeSearch($queryData)
     {
@@ -30,5 +33,10 @@ class Bill extends Model
     public function users()
     {
         return $this->hasOne(Users::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'idProduct','id');
     }
 }

@@ -19,7 +19,8 @@ class ProductController extends Controller
     }
     public function add()
     {
-        return view('admin.product.add');
+        $date = now()->toDateString();
+        return view('admin.product.add', compact('date'));
     }
     public function create(createRequest $request)
     {
@@ -47,6 +48,7 @@ class ProductController extends Controller
             $img3->move(public_path('imgUploads'), $img3Name);
             $request->img3 = $img3Name;
         }
+//        dd($request->all());
         if(Product::create([
             'name'=>$request->name,
             'amount'=>$request->amount,
@@ -55,17 +57,18 @@ class ProductController extends Controller
             'level'=>$request->level,
             'img1'=>$request->img1,
             'img2'=>$request->img2,
-            'img3'=>$request->img3
+            'img3'=>$request->img3,
+            'product_import_date' => $request->date,
         ]))
         {
             return redirect()->route('admin.listProduct')->with('success','successfully Add.');
         }
     }
-    
+
     public function delete(Product $id)
-    {   
+    {
         $id->delete();
-        return redirect()->route('admin.listProduct')->with('success','Đã xóa sản phẩm');   
+        return redirect()->route('admin.listProduct')->with('success','Đã xóa sản phẩm');
     }
     public function update(updateRequest $request, Product  $id)
     {
@@ -111,6 +114,7 @@ class ProductController extends Controller
         $id->img1 = $request->img1;
         $id->img2 = $request->img2;
         $id->img3 = $request->img3;
+        $id->product_import_date = $request->date;
         $id->save();
         //dd($request->only('name','amount','general','price','img1','img2','img3','level'));
         //$id->update($request->only('name','amount','general','price','img1','img2','img3','level'));

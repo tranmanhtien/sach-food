@@ -18,6 +18,7 @@ class Product extends Model
         'img1',
         'img2',
         'img3',
+        'product_import_date',
         'created_at',
         'updated_at'
     ];

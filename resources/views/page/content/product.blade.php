@@ -1,5 +1,10 @@
 @extends('page.index')
 @section('content')
+    <style>
+        .product_import_date {
+            margin-bottom: 3px !important;
+        }
+    </style>
 <section class="breadcrumb-section set-bg" data-setbg="{{ asset('./homepage/img/breadcrumb.jpg')}}">
     <div class="container">
         <div class="row">
@@ -37,8 +42,8 @@
                         <span>(18 reviews)</span>
                     </div>
                     <div class="product__details__price">{{$data->price}} vnđ</div>
+                    <p class="product_import_date">Ngày nhập sản phẩm: {{$data->product_import_date ?date('d/m/Y', strtotime($data->product_import_date)):""}}</p>
                     <p>{{$data->general}}</p>
-                    
                     <a href="{{ route('home.addcart', [Auth::user()->id,$data->id]) }}" class="primary-btn">Thêm vào giỏ</a>
                     <ul>
                         <li><b>Còn lại:</b> <span>{{$data->amount}} kg</span></li>

@@ -32,6 +32,7 @@ class createRequest extends FormRequest
             'img1'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'img2'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'img3'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'date' => 'required',
         ];
     }
     public function messages()
@@ -43,6 +44,7 @@ class createRequest extends FormRequest
             'level.required'=>'Không được để trống',
             'amount.integer'=>'Phải là số',
             'price.integer'=>'Phải là số',
+            'date.required'=>'Không được để trống',
         ];
     }
 }

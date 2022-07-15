@@ -8,7 +8,7 @@
     </div>
     <div class="card-body card-block">
         <form action="{{route('admin.updateProduct',$id )}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-            @csrf @method('PUT') 
+            @csrf @method('PUT')
             <div class="row form-group">
                 <div class="col col-md-3">
                     <label for="text-input" class=" form-control-label">Tên sản phẩm</label>
@@ -17,7 +17,7 @@
                 <input type="hidden" name="img11" value="{{$id->img1}}">
                 <input type="hidden" name="img12" value="{{$id->img2}}">
                 <input type="hidden" name="img13" value="{{$id->img3}}">
-                
+
                 <div class="col-12 col-md-9">
                     <input type="text" id="text-input" value="{{$id->name}}" name="name" placeholder="Nhập tên sản phẩm" class="form-control">
                     @error('name')
@@ -69,7 +69,7 @@
                         @if ($id->level == 4)
                             <span>Gói hàng</span>
                         @endif
-                
+
                         </option>
                         <option value="0">Trái cây</option>
                         <option value="1">Thịt </option>
@@ -126,6 +126,18 @@
                     <img src="{{ asset("/imgUploads/$id->img3")}}" alt="">
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class=" form-control-label">Ngày nhập hàng</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="date" id="text-input" name="date" placeholder="Nhập ngày nhập hàng"
+                           class="form-control date" value="{{$id->product_import_date}}">
+                    @error('date')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary btn-sm">
                     <i class="fa fa-dot-circle-o"></i> Submit
@@ -133,6 +145,6 @@
             </div>
         </form>
     </div>
-    
+
 </div>
 @stop();

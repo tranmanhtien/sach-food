@@ -44,7 +44,7 @@
                     <div class="header-mobile-inner">
                         <a class="logo" href="index.html">
                             <h3><b><strong style="color: rgb(0, 145, 255)">Sạch foods</strong></b></h3>
-                            
+
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -103,7 +103,7 @@
         <!-- END HEADER MOBILE-->
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
-            
+
             <div class="logo">
                 <a href="#">
                     <h3><b><strong style="color: rgb(0, 145, 255)">Sạch foods</strong></b></h3>
@@ -137,6 +137,9 @@
                                 <li>
                                     <a href="{{route('admin.addBill')}}">Thêm đơn hàng</a>
                                 </li>
+                                <li>
+                                    <a href="{{route('admin.thongKe')}}">Thông kê doanh thu</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="has-sub">
@@ -157,7 +160,7 @@
         </aside>
     </div>
         <!-- END MENU SIDEBAR-->
-        
+
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
@@ -209,23 +212,23 @@
                                 <div class="alert alert-success">
                                     <strong>Success!</strong> {{Session::get('success')}}
                                 </div>
-                                @endif 
+                                @endif
                                 @if(Session::has('error'))
                                 <div class="alert alert-danger">
                                     <strong>Error!</strong> {{Session::get('error')}}
-                                </div> 
-                                @endif 
+                                </div>
+                                @endif
                                 <div class="table-responsive table-responsive-data2">
                                     @yield('content')
                                 </div>
                                 <!-- END DATA TABLE -->
-            
+
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
-        
+
         </div>
     </div>
     <script>
@@ -255,7 +258,7 @@
     <!-- Main JS-->
     <script src="{{ asset('/viewAdmin/js/main.js')}}"></script>
     <script src="{{ asset('/viewAdmin/js/action.js')}}"></script>
-   
+
 </body>
 
 </html>
